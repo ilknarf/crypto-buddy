@@ -11,7 +11,20 @@ function App() {
       path: '/rsa',
       name: 'RSA',
       component: <Rsa />,
-    }
+    },
+    {
+      path: '/rsa',
+      name: 'RSA',
+      component: <Rsa />,
+    },{
+      path: '/rsa',
+      name: 'RSA',
+      component: <Rsa />,
+    },{
+      path: '/rsa',
+      name: 'RSA',
+      component: <Rsa />,
+    },
   ]
 
   return (
@@ -32,7 +45,7 @@ function App() {
         </AppBar>
         <Switch>
           {algos.map(v => <Route path={v.path} children={v.component} />)}
-          <Route path="" children={Home} />
+          <Route path="" children={<Home algos={algos} />} />
         </Switch>
       </Box>
     </React.Fragment>
