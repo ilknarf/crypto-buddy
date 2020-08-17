@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, FormControl, TextField, Button, Paper, Typography } from '@material-ui/core';
 
 import Panel from '../components/Panel';
 import Card from '../components/Card';
 
+import RSA from '../utils/rsaAlgorithm';
+
 
 function Rsa() {
+  let [privateKey, setPrivateKey] = useState(null);
   return (
     <Container>
       <Panel>
@@ -20,7 +23,7 @@ function Rsa() {
           </FormControl>
         </Card>
         <Card>
-          <TextField label="Private Key" contentEditable="false" />
+          <TextField label="Private Key" contentEditable="false" value={privateKey}/>
         </Card>
       </Panel>
     </Container>
