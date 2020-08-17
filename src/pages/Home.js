@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Box, Button, Grid, Paper, ListItemText } from '@material-ui/core';
+import { Container, Box, Button, List, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
 import { Link } from 'react-router-dom';
 
 function Home(props) {
@@ -10,15 +11,16 @@ function Home(props) {
         Current Algorithms: <br />
       </p>
       <Box style={{ flexGrow: 1 }} spacing={1}>
-        <Grid container>
+        <List container>
           {props.algos.map(v => (
-            <Grid item component={Link} to={v.path} style={{ padding: '10px' }}>
-              <Button variant="contained" disableElevation>
-                <ListItemText primary={v.name} />
-              </Button>
-            </Grid>
+            <ListItem item component={Link} to={v.path} style={{ padding: '10px' }} divider>
+              <ListItemAvatar>
+                <LockIcon />
+              </ListItemAvatar>
+              <ListItemText primary={v.name} />
+            </ListItem>
               ))}
-        </Grid>
+        </List>
       </Box>
     </Container>
   )

@@ -12,19 +12,6 @@ function App() {
       name: 'RSA',
       component: <Rsa />,
     },
-    {
-      path: '/rsa',
-      name: 'RSA',
-      component: <Rsa />,
-    },{
-      path: '/rsa',
-      name: 'RSA',
-      component: <Rsa />,
-    },{
-      path: '/rsa',
-      name: 'RSA',
-      component: <Rsa />,
-    },
   ]
 
   return (
@@ -37,7 +24,7 @@ function App() {
               Crypto Buddy
             </Typography>
             {algos.map(v => (
-              <Button component={Link} to={v.path} variant="contained">
+              <Button component={Link} to={v.path} color="inherit" variant="outlined">
                 {v.name}
               </Button>
             ))}
