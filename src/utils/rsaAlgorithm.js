@@ -1,5 +1,4 @@
-/*global BigInt:false*/
-
+/* global BigInt:false */
 // must have both primes to efficiently compute the private key.
 export function computePrivateKey(p1, p2, pub) {
   // Use Euler's theorem to calculate phi(p1p2) => phi(p1) * phi(p2).

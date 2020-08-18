@@ -1,6 +1,4 @@
-/*global BigInt:false*/
-
-
+/* global BigInt:false */
 import React, { useState } from 'react';
 import { Container, FormControl, TextField, Button, Divider, TextareaAutosize } from '@material-ui/core';
 
@@ -19,28 +17,48 @@ function setState(setter) {
 }
 
 function Rsa() {
+  let [currentPub, setCurrentPub] = useState(null);
   let [privateKey, setPrivateKey] = useState(null);
 
   let [p1, setP1] = useState(263);
   let [p2, setP2] = useState(271);
   let [pub, setPub] = useState(577);
 
+  let [semiprime, setSemiprime] = useState(null);
+
   let [error, setError] = useState(false);
   let [hidden, setHidden] = useState(true);
   let [helperText, setHelperText] = useState('');
 
-  let [message, setMessage] = useState(null);
+  let [message, setMessage] = useState('');
+  let [encryptedMessage, setEncryptedMessage] = useState(null);
 
   function generatePrivateKey() {
     try {
-      const priv = RSA.computePrivateKey(BigInt(p1), BigInt(p2), BigInt(pub));
+      let prime1 = BigInt(p1);
+      let prime2 = BigInt(p2);
+      let publicKey = BigInt(pub);
+
+      setSemiprime(prime1 * prime2);
+
+      const priv = RSA.computePrivateKey(prime1, prime2, publicKey);
+
       setPrivateKey(priv.toString());
+      setCurrentPub(publicKey.toString());
+      setEncryptedMessage('');
+
       setError(false);
     } catch (e) {
       setHidden(false);
       setError(true);
       setHelperText('Public key not coprime to totient')
     }
+  }
+
+  function encryptMessage() {
+    const encrypted = RSA.encryptMessage(message, BigInt(currentPub), semiprime);
+
+    setEncryptedMessage(encrypted);
   }
 
   return (
@@ -67,17 +85,23 @@ function Rsa() {
         <Panel>
           <Card>
             <FormControl>
-              <TextField value={pub} label="Public Key" />
-              <TextField value={privateKey} placeholder={"Private Key"} />
+              <TextField value={currentPub} contentEditable="false" placeholder="Public Key" />
+              <TextField value={privateKey} contentEditable="false" placeholder="Private Key" />
               <TextareaAutosize
                 rowsMin={3}
                 placeholder="Message to encrypt"
                 value={message}
                 onChange={setState(setMessage)}
               />
-              <Button>
+              <Button onClick={encryptMessage}>
                 Generate Encrypted Message
               </Button>
+              <TextareaAutosize
+                rowsMin={3}
+                placeholder="Encrypted message"
+                value={encryptedMessage}
+                contentEditable="false"
+              />
             </FormControl>
           </Card>
         </Panel>
