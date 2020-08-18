@@ -4,6 +4,7 @@ import { makeStyles, Box } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'inline-block',
+    verticalAlign: 'top',
     padding: theme.spacing(1),
     margin: theme.spacing(2),
   },

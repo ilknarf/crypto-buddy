@@ -1,7 +1,4 @@
-/*
- * The goal of this gist is to demonstrate how the RSA cryptosystem works
- * with a toy implementation.
- */
+/*global BigInt:false*/
 
 // must have both primes to efficiently compute the private key.
 export function computePrivateKey(p1, p2, pub) {
@@ -79,3 +76,9 @@ function euclideanAlgorithm(n1, n2) {
 
   return n1;
 }
+
+export default {
+  computePrivateKey,
+  encryptMessage,
+  decryptMessage,
+};

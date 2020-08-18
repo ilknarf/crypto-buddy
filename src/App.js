@@ -4,32 +4,23 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Rsa from './pages/Rsa';
+import NavBar from './components/NavBar';
+
+const algos = [
+  {
+    path: '/rsa',
+    name: 'RSA',
+    component: <Rsa />,
+  },
+]
 
 function App() {
-  const algos = [
-    {
-      path: '/rsa',
-      name: 'RSA',
-      component: <Rsa />,
-    },
-  ]
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Box>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h5" color="inherit" style={{ textTransform: 'none', flex: 1, textDecoration: 'none' }} component={Link} to={"/"}>
-              Crypto Buddy
-            </Typography>
-            {algos.map(v => (
-              <Button component={Link} to={v.path} color="inherit" variant="outlined">
-                {v.name}
-              </Button>
-            ))}
-          </Toolbar>
-        </AppBar>
+        <NavBar paths={algos} />
         <Switch>
           {algos.map(v => <Route path={v.path} children={v.component} />)}
           <Route path="" children={<Home algos={algos} />} />
