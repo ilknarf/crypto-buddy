@@ -17,29 +17,40 @@ function setState(setter) {
 }
 
 function Rsa() {
-  let [currentPub, setCurrentPub] = useState(null);
-  let [privateKey, setPrivateKey] = useState(null);
+  let [currentPub, setCurrentPub] = useState('');
+  let [privateKey, setPrivateKey] = useState('');
 
-  let [p1, setP1] = useState(263);
-  let [p2, setP2] = useState(271);
-  let [pub, setPub] = useState(577);
+  let [p1, setP1] = useState('263');
+  let [p2, setP2] = useState('271');
+  let [pub, setPub] = useState('577');
 
-  let [semiprime, setSemiprime] = useState(null);
+  let [semiprime, setSemiprime] = useState('');
 
   let [error, setError] = useState(false);
   let [hidden, setHidden] = useState(true);
   let [helperText, setHelperText] = useState('');
 
   let [message, setMessage] = useState('');
-  let [encryptedMessage, setEncryptedMessage] = useState(null);
+  let [encryptedMessage, setEncryptedMessage] = useState('');
+
+  let [decryptedMessage, setDecryptedMessage] = useState('');
 
   function generatePrivateKey() {
     try {
+      for (let l of [p1, p2, pub]) {
+        if (l.includes('e')) {
+          setHidden(false);
+          setError(true);
+          setHelperText('Error contains "e"');
+          return;
+        }
+      }
+
       let prime1 = BigInt(p1);
       let prime2 = BigInt(p2);
       let publicKey = BigInt(pub);
 
-      setSemiprime(prime1 * prime2);
+      setSemiprime((prime1 * prime2).toString());
 
       const priv = RSA.computePrivateKey(prime1, prime2, publicKey);
 
@@ -56,9 +67,15 @@ function Rsa() {
   }
 
   function encryptMessage() {
-    const encrypted = RSA.encryptMessage(message, BigInt(currentPub), semiprime);
+    const encrypted = RSA.encryptMessage(message, BigInt(currentPub), BigInt(semiprime));
 
     setEncryptedMessage(encrypted);
+  }
+
+  function decryptMessage() {
+    const decrypted = RSA.decryptMessage(encryptedMessage, BigInt(privateKey), BigInt(semiprime));
+
+    setDecryptedMessage(decrypted);
   }
 
   return (
@@ -70,9 +87,9 @@ function Rsa() {
         <Panel>
           <Card>
             <FormControl>
-              <TextField value={p1} error={error} onChange={setState(setP1)} label="Prime 1" />
-              <TextField value={p2} error={error} onChange={setState(setP2)} label="Prime 2" />
-              <TextField value={pub} error={error} onChange={setState(setPub)} label="Public Key" />
+              <TextField value={p1} error={error} type="number" onChange={setState(setP1)} label="Prime 1" />
+              <TextField value={p2} error={error} type="number" onChange={setState(setP2)} label="Prime 2" />
+              <TextField value={pub} error={error} type="number" onChange={setState(setPub)} label="Public Key" />
               <Button onClick={generatePrivateKey}>
                 Generate Private Key
               </Button>
@@ -85,8 +102,8 @@ function Rsa() {
         <Panel>
           <Card>
             <FormControl>
-              <TextField value={currentPub} contentEditable="false" placeholder="Public Key" />
-              <TextField value={privateKey} contentEditable="false" placeholder="Private Key" />
+              <TextField value={currentPub} contentEditable="false" label="Public Key" />
+              <TextField value={semiprime} contentEditable="false" label="Semiprime" />
               <TextareaAutosize
                 rowsMin={3}
                 placeholder="Message to encrypt"
@@ -94,12 +111,35 @@ function Rsa() {
                 onChange={setState(setMessage)}
               />
               <Button onClick={encryptMessage}>
-                Generate Encrypted Message
+                Encrypt Message
               </Button>
               <TextareaAutosize
                 rowsMin={3}
                 placeholder="Encrypted message"
                 value={encryptedMessage}
+                contentEditable="false"
+              />
+            </FormControl>
+          </Card>
+        </Panel>
+        <Panel>
+          <Card>
+            <FormControl>
+              <TextField value={privateKey} contentEditable="false" label="Private Key" />
+              <TextField value={semiprime} contentEditable="false" label="Semiprime" />
+              <TextareaAutosize
+                rowsMin={3}
+                placeholder="Encrypted message"
+                value={encryptedMessage}
+                contentEditable="false"
+              />
+              <Button onClick={decryptMessage}>
+                Decrypt Message
+              </Button>
+              <TextareaAutosize
+                rowsMin={3}
+                placeholder="Decrypted message"
+                value={decryptedMessage}
                 contentEditable="false"
               />
             </FormControl>
