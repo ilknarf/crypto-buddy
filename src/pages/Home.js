@@ -1,15 +1,15 @@
 import React from 'react';
-import { Container, Box, Button, List, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
+import { Container, Box, Button, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import { Link } from 'react-router-dom';
 
 function Home(props) {
   return(
     <Container>
-      <p>
+      <Typography>
         Welcome to Crypto Buddy! Here I will put some implementations of cryptography as educative examples. <br />
         Current Algorithms: <br />
-      </p>
+      </Typography>
       <Box style={{ flexGrow: 1 }} spacing={1}>
         <List container>
           {props.algos.map(v => (
