@@ -10,7 +10,7 @@ export function computePrivateKey(p1, p2, pub) {
   const key = (p1 - 1n) * (p2 - 1n);
 
   // check if coprime, to ensure unique decryption
-  if (euclideanAlgorithm(key, pub) !== 1n) {
+  if (_euclideanAlgorithm(key, pub) !== 1n) {
     throw 'invalid public key: not coprime to phi(n), gcd';
   }
 
@@ -31,11 +31,11 @@ export function computePrivateKey(p1, p2, pub) {
 export function encryptMessage(message, pub, semiprime) {
 
   // get charcodes for the string
-  let messageBytes = getBytes(message);
+  let messageBytes = _getBytes(message);
 
   // encrypt message by taking the public key's power for each byte
   // then reduce bytes into space-separated hexadecimal numbers
-  return exponentiateOverN(messageBytes, pub, semiprime)
+  return _exponentiateOverN(messageBytes, pub, semiprime)
     .map((v, i) => v.toString(16))
     .join(' ');
 }
@@ -46,16 +46,16 @@ export function decryptMessage(message, priv, semiprime) {
     .split(/\s/)
     .map((v) => parseInt(v, 16));
 
-  return String.fromCharCode(...exponentiateOverN(bytes, priv, semiprime));
+  return String.fromCharCode(..._exponentiateOverN(bytes, priv, semiprime));
 }
 
-function exponentiateOverN(bytes, factor, n) {
+export function _exponentiateOverN(bytes, factor, n) {
   return bytes
     .map((v) => Number(BigInt(v) ** factor % n));
 }
 
 // create byte array
-function getBytes(str) {
+export function _getBytes(str) {
   let bytes = new Array(str.length);
 
   for (let i = 0; i < str.length; i++) {
@@ -66,7 +66,11 @@ function getBytes(str) {
 }
 
 // quick implementation of Euclidean algorithm to determine GCD
-function euclideanAlgorithm(n1, n2) {
+export function _euclideanAlgorithm(n1, n2) {
+  if (typeof(n1) != 'bigint' || typeof(n2) != 'bigint') {
+    throw TypeError('input not BigInt');
+  }
+
   while (n2 !== 0n) {
     let t = n1 % n2;
     n1 = n2;
