@@ -1,9 +1,17 @@
 import React from 'react';
-import { AppBar, Box, Button, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Box, Button, Toolbar, Typography, makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+
+const useStyles = makeStyles(theme => ({
+  buttonBox: {
+    margin: theme.spacing(1),
+  },
+}));
 
 function NavBar(props) {
   const { paths } = props;
+  const { buttonBox } = useStyles();
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -11,9 +19,11 @@ function NavBar(props) {
           Crypto Buddy
         </Typography>
         {paths.map(v => (
-          <Button component={Link} to={v.path} color="inherit" variant="outlined">
-            {v.name}
-          </Button>
+          <Box>
+            <Button className={buttonBox} component={Link} to={v.path} disableElevation variant="contained">
+              {v.name}
+            </Button>
+          </Box>
         ))}
       </Toolbar>
     </AppBar>

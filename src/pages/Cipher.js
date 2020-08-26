@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {FormControl, TextField, Container, Button, Typography, makeStyles } from '@material-ui/core';
+import {FormControl, TextField, Container, Button, Typography, makeStyles, TextareaAutosize } from '@material-ui/core';
 
 import Panel from '../components/Panel';
 import Card from '../components/Card';
@@ -37,12 +37,21 @@ function Cipher(props) {
             </Typography>
             <TextField label="Key" value={key} onChange={setState(setKey)} type="number" />
             <Typography>
-              2. Enter a message to encrypt
+              2. Enter a message to <br />
+              encrypt
             </Typography>
-            <TextField label="Message" value={message} onChange={setState(setMessage)} />
+            <TextareaAutosize placeholder="Message" value={message} onChange={setState(setMessage)} />
             <Button>
               Encrypt
             </Button>
+          </FormControl>
+        </Card>
+      </Panel>
+      <Panel>
+        <Card>
+          <FormControl>
+            <TextField label="Key" value={key} contentEditable="false" />
+            <TextareaAutosize placeholder="Encrypted Message" contentEditable="false" />
           </FormControl>
         </Card>
       </Panel>
