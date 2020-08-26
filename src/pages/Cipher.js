@@ -23,8 +23,20 @@ const useStyles = makeStyles({
 function Cipher(props) {
   const classes = useStyles();
 
-  const [message, setMessage] = useState('');
-  const [key, setKey] = useState(0);
+  let [message, setMessage] = useState('');
+  let [key, setKey] = useState('0');
+  let [currKey, setCurrKey] = useState('');
+  let [encrypted, setEncrypted] = useState('');
+  let [decrypted, setDecrypted] = useState('');
+
+  function encryptMessage() {
+    setEncrypted(cipher.encrypt(message, key));
+    setCurrKey(key);
+  }
+
+  function decryptMessage() {
+    setDecrypted(cipher.decrypt(encrypted, currKey));
+  }
 
   return (
     <Container className={classes.container}>
@@ -40,9 +52,9 @@ function Cipher(props) {
               2. Enter a message to <br />
               encrypt
             </Typography>
-            <TextareaAutosize placeholder="Message" value={message} onChange={setState(setMessage)} />
-            <Button>
-              Encrypt
+            <TextareaAutosize placeholder="Message" value={message} onChange={setState(setMessage)} rowsMin={3} />
+            <Button onClick={encryptMessage}>
+              Encrypt Message
             </Button>
           </FormControl>
         </Card>
@@ -50,8 +62,12 @@ function Cipher(props) {
       <Panel>
         <Card>
           <FormControl>
-            <TextField label="Key" value={key} contentEditable="false" />
-            <TextareaAutosize placeholder="Encrypted Message" contentEditable="false" />
+            <TextField label="Key" value={currKey} contentEditable="false" />
+            <TextareaAutosize placeholder="Encrypted Message" contentEditable="false" value={encrypted} rowsMin={3} />
+            <Button onClick={decryptMessage}>
+              Decrypt Message
+            </Button>
+            <TextareaAutosize placeholder="Decrypted Message" contentEditable="false" value={decrypted} rowsMin={3} />
           </FormControl>
         </Card>
       </Panel>

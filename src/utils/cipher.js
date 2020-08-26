@@ -1,12 +1,14 @@
 function encrypt(message, key) {
+  console.log(key);
   return message
-    .map(v => message.charCodeAt(v) + key)
+    .split('')
+    .map((_, i) => message.charCodeAt(i) + Number(key))
     .join(' ');
 }
 
-function decrypt(message, key) {
-  return message
-    .split()
+function decrypt(encrypted, key) {
+  return encrypted
+    .split(' ')
     .map(v => String.fromCharCode(v - key))
     .join('');
 }
