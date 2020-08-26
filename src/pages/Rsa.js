@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     justifyContent: 'center',
-  }
+  },
 });
 
 
