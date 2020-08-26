@@ -4,6 +4,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Rsa from './pages/Rsa';
+import Cipher from './pages/Cipher';
 import NavBar from './components/NavBar';
 
 const algos = [
@@ -11,6 +12,11 @@ const algos = [
     path: '/rsa',
     name: 'RSA',
     component: <Rsa />,
+  },
+  {
+    path: '/cipher',
+    name: 'Cipher',
+    component: <Cipher />,
   },
 ]
 
